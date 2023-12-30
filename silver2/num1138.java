@@ -1,3 +1,5 @@
+package silver2;
+
 import java.util.Scanner;
 
 public class num1138 {
