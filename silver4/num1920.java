@@ -15,11 +15,8 @@ public class num1920 {
             A[i] = Integer.parseInt(input[i]);
         }
         Arrays.sort(A); //A를 오름차순으로 정렬
-
         int M = Integer.parseInt(br.readLine());
         String[] input2 = br.readLine().split(" ");
-        int[] inputNum = new int[N];
-        int isExist = 0;
         for (int i = 0; i < M; i++) {
             int num = Integer.parseInt(input2[i]);
             if (binarySearch(A, num)) {
@@ -30,8 +27,6 @@ public class num1920 {
         }
         br.close();
     }
-
-
     public static boolean binarySearch(int[] arr, int target) {
         int left = 0; //이분탐색의 시작지점
         int right = arr.length - 1; //이분탐색의 끝 지점
