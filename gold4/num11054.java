@@ -32,11 +32,12 @@ public class num11054 {
                 }
             }
         }
-        int maxLength = 0;
-        for (int i = 0; i < N; i++) {
-            int length = increaseDp[i] + decreaseDp[i] - 1; // 중복되는 i를 빼주어야 함(주어진 수열에서의 최대값)
-            maxLength = Math.max(maxLength, length);
-        }
+//        int maxLength = 0;
+//        for (int i = 0; i < N; i++) {
+//            int length = increaseDp[i] + decreaseDp[i] - 1; // 중복되는 i를 빼주어야 함(주어진 수열에서의 최대값)
+//            maxLength = Math.max(maxLength, length);
+//        }
+        int maxLength = increaseDp[N - 1] + decreaseDp[0] - 1;
         System.out.println(maxLength);
     }
 }
