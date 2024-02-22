@@ -16,7 +16,7 @@ public class num2579 {
         }
         dp[0] = 0;
         dp[1] = stairs[1];
-        if(N>=2){
+        if (N >= 2) {
             dp[2] = stairs[1] + stairs[2];
             for (int i = 3; i <= N; i++) {
                 dp[i] = Math.max(dp[i - 3] + stairs[i - 1], dp[i - 2]) + stairs[i]; //계단을 '두개+하나' 밟는 경우와 '두개'만 밟는 경우를 비교
