@@ -34,10 +34,4 @@ public class num1463 {
         }
         System.out.println(dp[N]); //가장 큰 수(최종 값)에는 이 수를 1로 만들기 위한 최소한의 횟수가 저장되어 있음
     }
-
-    public static class num11053 {
-        public static void main(String[] args) throws IOException {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        }
-    }
 }
