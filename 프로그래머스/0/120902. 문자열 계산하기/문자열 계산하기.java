@@ -1,17 +1,13 @@
-class Solution {
-    public int solution(String my_string) {
-        
-        String[] arr = my_string.split(" ");
-        int length = arr.length;
-        int answer = Integer.parseInt(arr[0]);
-        
-        for(int i=1;i<length-1;i++){
-            if(arr[i].equals("+")){
-                answer = answer + Integer.parseInt(arr[i+1]);
-            }else if(arr[i].equals("-")){
-                answer = answer - Integer.parseInt(arr[i+1]);
-            }
-        }
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+public class Solution {
+    public int solution(String my_string) throws ScriptException {
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+
+        int answer = (int)engine.eval(my_string);
         return answer;
     }
 }
