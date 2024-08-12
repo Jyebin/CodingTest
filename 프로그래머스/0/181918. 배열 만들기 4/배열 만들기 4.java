@@ -7,7 +7,7 @@ class Solution {
         int len = arr.length;
         while(i<len){
             if(stk.isEmpty()){
-                stk.add(arr[i]);
+                stk.push(arr[i]);
                 i++;
             }else{ //원소가 있으면
                 if(stk.peek() < arr[i]){ //stk의 마지막 원소가 더 작으면
