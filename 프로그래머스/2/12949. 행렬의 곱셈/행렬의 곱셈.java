@@ -10,7 +10,7 @@ class Solution {
             for(int j=0; j<col2; j++){
                 int sum = 0;
                 for(int k=0; k<col1; k++){
-                    sum = sum + arr1[i][k] * arr2[k][j];
+                    sum += arr1[i][k] * arr2[k][j];
                 }
                 result[i][j] = sum;
             }
@@ -18,3 +18,5 @@ class Solution {
         return result;
     }
 }
+
+
