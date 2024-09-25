@@ -2,17 +2,18 @@ import java.util.*;
 
 class Solution{
     public int solution(String s){
+        //같은 알파벳이 2개 붙어 있는 짝을 찾음
+        //이 두개를 제거
         Stack<Character> stack = new Stack<>();
-        int answer = 0;
-        //stack에서의 상위값이랑 현재 집어넣으려는 값이랑 같으면 둘 다 pop
-        for(int i=0;i<s.length();i++){
-            char now = s.charAt(i); //현재 문자
-            if(!stack.isEmpty() && now == stack.peek()){ //현재 글자와 스택의 최상단 요소가 같고 스택이 비어있지 않다면
-                stack.pop(); //최상단 요소 pop
-            }else{ //현재 글자와 스택의 최상단 요소가 다르거나 스택이 비어있다면
-                stack.push(now); //현재 요소를 stack에 넣음
+        for(int i=0; i<s.length(); i++){
+            char now = s.charAt(i);
+            if(!stack.isEmpty() && stack.peek()==now){
+                stack.pop();
+            }else{
+                stack.push(now);
             }
         }
+        int answer = 0;
         if(stack.isEmpty()){
             answer = 1;
         }
