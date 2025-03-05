@@ -1,9 +1,13 @@
 class Solution {
     public int solution(int hp) {
-        //장군 : 5, 병정 : 3, 일 : 1
-        //적은 병력으로 사냥해야 함
-        int answer = hp/5 + (hp%5)/3 + hp%5%3;
-
+        //장군 개미 : 5, 병정 개미 : 3, 일개미 : 1
+        //최소한의 병력 구하기
+        int first = hp / 5;
+        hp = hp % 5;
+        int second = hp / 3;
+        hp = hp % 3;
+        int end = hp;
+        int answer = first + second + end;
         return answer;
     }
 }
