@@ -1,15 +1,9 @@
--- 보호 시작일보다 입양일이 더 빠른 동물
--- 아이디, 이름 조회
--- 보호 시작일 ASC
--- 보호 시작일 : ANIMAL_INS
--- 입양일 : ANIMAL_OUTS
+-- 한쪽 테이블에만 있는 정보를 얻고 싶으므로 join 사용
+-- 보호 시작일(ins)보다 입양일(outs)이 더 빠른 동물 조회
 
 SELECT I.ANIMAL_ID, I.NAME
 FROM ANIMAL_INS I
-JOIN (
-    SELECT ANIMAL_ID, DATETIME
-    FROM ANIMAL_OUTS
-) AS O
+INNER JOIN ANIMAL_OUTS O
 ON I.ANIMAL_ID = O.ANIMAL_ID
 WHERE I.DATETIME > O.DATETIME
-ORDER BY I.DATETIME ASC;
+ORDER BY I.DATETIME
