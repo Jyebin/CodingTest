@@ -1,40 +1,48 @@
-import java.util.*;
+import java.util.Queue;
+import java.util.LinkedList;
 
 class Solution {
-    //{상,하,좌,우}
-    private static int[] dx = {0,0,-1,1}; //좌,우는 x의 이동
-    private static int[] dy = {1,-1,0,0}; //상,하는 y의 이동
     public int solution(int[][] maps) {
-        int n = maps.length; //가로 칸의 개수
-        int m = maps[0].length; //세로 칸의 개수
-        int[][] distance = new int[n][m]; //최단 거리를 저장할 배열
-        boolean[][] visited = new boolean[n][m]; //방문 여부를 저장할 배열
+        //최단거리 찾기 -> bfs -> Queue
+        //동, 서, 남, 북 한 칸
+        //0이 벽이 있는 자리, 1이 없는 자리 -> 1로만 가야 함
+        boolean[][] visited = new boolean[maps.length][maps[0].length];
+        int[][] dist = new int[maps.length][maps[0].length]; //각 칸별 최단거리
+        
+        int[] dx = {-1, 0, 1, 0};
+        int[] dy = {0, -1, 0, 1};
         
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[]{0, 0}); // 시작점 추가
+        queue.add(new int[]{0,0});
         visited[0][0] = true;
-        distance[0][0] = 1; // 시작점까지의 거리는 1
+        dist[0][0] = 1;
         
         while(!queue.isEmpty()){
             int[] now = queue.poll();
-            int x = now[0]; //x좌표
-            int y = now[1]; //y좌표
+            int x = now[0];
+            int y = now[1];
             
             for(int i=0; i<4; i++){
-                int newX = x + dx[i];
-                int newY = y + dy[i];
+                int nx = x + dx[i];
+                int ny = y + dy[i];
                 
-                if(newX >= 0 && newY >= 0 && newX < n && newY < m && maps[newX][newY] == 1 && visited[newX][newY] == false){
-                    queue.add(new int[]{newX, newY});
-                    visited[newX][newY] = true;
-                    distance[newX][newY] = distance[x][y] + 1; //거리 1 증가
+                if(nx < 0 || ny < 0 || nx >= maps.length || ny >= maps[0].length){
+                    continue;
                 }
+                
+                if(maps[nx][ny] == 0 || visited[nx][ny]){
+                    continue;
+                }
+                
+                queue.add(new int[]{nx, ny});
+                visited[nx][ny] = true;
+                dist[nx][ny] = dist[x][y] + 1;
             }
         }
-        if(distance[n-1][m-1] == 0){
+        if (dist[maps.length - 1][maps[0].length - 1] == 0) {
             return -1;
         } else {
-            return distance[n-1][m-1];
+            return dist[maps.length - 1][maps[0].length - 1];
         }
     }
 }
