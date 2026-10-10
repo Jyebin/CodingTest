@@ -1,16 +1,23 @@
 class Solution {
     public int[] solution(String s) {
-        int[] answer = new int[s.length()];
+    
+        //자신보다 앞에 나왔으면서 자신과 가장 가까운 곳에 있는 글자
+        int[] arr = new int[s.length()];
         for(int i=0; i<s.length(); i++){
-            answer[i] = -1; //우선 -1로 채움
-            //내 앞 숫자부터 비교
+            arr[i] = -1;
+        }
+        
+        for(int i=0; i<s.length(); i++){
+            String now = s.charAt(i) + ""; //지금꺼랑 그 앞에꺼랑 비교
             for(int j=i-1; j>=0; j--){
-                if(s.charAt(i) == s.charAt(j)){
-                    answer[i] = i - j;
-                    break;
+                String str = s.charAt(j) + ""; //지금꺼부터 이전꺼까지
+                if(now.equals(str) && arr[i] == -1){
+                    arr[i] = i - j;
+                }else if(now.equals(str)){
+                    arr[i] = Math.min(arr[i], i-j);
                 }
             }
         }
-        return answer;
+        return arr;
     }
 }
