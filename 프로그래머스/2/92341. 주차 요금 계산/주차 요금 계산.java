@@ -1,50 +1,56 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeMap;
 
 class Solution {
     public int[] solution(int[] fees, String[] records) {
-        int defaultTime = fees[0];
+        
         int defaultFee = fees[1];
-        int plusTime = fees[2];
-        int plusFee = fees[3];
+        int defaultTime = fees[0];
+        int unitTime = fees[2];
+        int unitFee = fees[3];
+        HashMap<String, Integer> inTime = new HashMap<>(); //입차 시간
+        TreeMap<String, Integer> totalTime = new TreeMap<>(); //누적 시간
+        HashSet<String> set = new HashSet<>();
 
-        Map<String, Integer> inMap = new HashMap<>();     // 차번호 → 입차 시각(분)
-        Map<String, Integer> totalMap = new HashMap<>();  // 차번호 → 누적 시간(분)
-
-        for (int i = 0; i < records.length; i++) {
+        for(int i=0; i<records.length; i++){
             String[] str = records[i].split(" ");
-            String[] t = str[0].split(":");
-            int min = Integer.parseInt(t[0]) * 60 + Integer.parseInt(t[1]);
-            String car = str[1];
-
-            if (str[2].equals("IN")) {
-                inMap.put(car, min);
-            } else {
-                int inMin = inMap.get(car);
-                inMap.remove(car);
-                totalMap.put(car, totalMap.getOrDefault(car, 0) + (min - inMin));
+            String[] min = str[0].split(":");
+            
+            //str[0]=시각
+            //str[1]=차량번호
+            //str[2]=입출차 내역
+            if(str[2].equals("IN")){
+                inTime.put(str[1], Integer.parseInt(min[0]) * 60 + Integer.parseInt(min[1]));
+                set.add(str[1]);
+            }else if(str[2].equals("OUT") && set.contains(str[1])){ //OUT이고 set에 있으면
+                set.remove(str[1]); //해당하는 차 번호를 지우고
+                int now = Integer.parseInt(min[0]) * 60 + Integer.parseInt(min[1]);
+                int stay = now - inTime.get(str[1]);
+                totalTime.put(str[1], totalTime.getOrDefault(str[1], 0) + stay);   
+            }
+            
+        }
+        if(!set.isEmpty()){
+            for(String s : set){
+                totalTime.put(s, totalTime.getOrDefault(s, 0) + 23*60 + 59 - inTime.get(s));
             }
         }
-
-        for (String car : inMap.keySet()) {
-            int inMin = inMap.get(car);
-            totalMap.put(car, totalMap.getOrDefault(car, 0) + (23 * 60 + 59 - inMin));
-        }
-
-        List<String> cars = new ArrayList<>(totalMap.keySet());
-        Collections.sort(cars);
-
-        int[] answer = new int[cars.size()];
-        for (int i = 0; i < cars.size(); i++) {
-            int total = totalMap.get(cars.get(i));
-
-            if (total <= defaultTime) {
-                answer[i] = defaultFee;
-            } else {
-                int extra = total - defaultTime;
-                int units = (extra + plusTime - 1) / plusTime;   // 올림
-                answer[i] = defaultFee + units * plusFee;
+        
+        int[] answer = new int[totalTime.size()];
+        //TreeMap을 써서 정렬은 필요 없음, 요금조건만 맞추면 됨
+        int i = 0;
+        for(String s : totalTime.keySet()){
+            int time = 0;
+            if(totalTime.get(s) <= defaultTime){
+                time = defaultFee;
+            }else{
+                time = defaultFee + (int)Math.ceil((double)(totalTime.get(s) - defaultTime)/unitTime) * unitFee;
             }
+            answer[i] = time;
+            i++;
         }
+        
         return answer;
     }
 }
