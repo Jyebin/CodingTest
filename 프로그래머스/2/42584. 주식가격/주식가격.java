@@ -1,21 +1,22 @@
-import java.util.*;
-class Solution {
-    public int[] solution(int[] prices) {
-        int length = prices.length;
-        int[] answer = new int[length];
+import java.util.ArrayList;
 
-        for(int i=0; i<length; i++){
-            int cnt = 0;
-            int now = prices[i]; // 비교 대상 값
-            Stack<Integer> stack = new Stack<>();
-            for(int j=i+1; j<length; j++){ // 현재 값 이후의 값들 비교
-                stack.push(prices[j]);
-                if(now > prices[j]){
+class Solution {
+    public ArrayList solution(int[] prices) {
+        ArrayList<Integer> answer = new ArrayList<>();
+        //index를 늘리면서 같거나 같을 때 까지 1초 ++
+        
+        for(int i=0; i<prices.length; i++){
+            int sec = 0; //시작시점에는 무조건 1초
+            int now = prices[i];
+            
+            for(int j=i+1; j<prices.length; j++){
+                int next = prices[j];
+                sec ++;
+                if(now > next){
                     break;
                 }
             }
-            cnt = stack.size();
-            answer[i] = cnt;
+            answer.add(sec);
         }
         return answer;
     }
