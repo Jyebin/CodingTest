@@ -1,13 +1,15 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
+
 class Solution {
     public int[] solution(int[] prices) {
         int len = prices.length;
         int[] answer = new int[len];
+        //주식 가격의 index를 먼저 stack에 더하고 조건이 맞으면 그부분의 답을 구하고 stack에서 제외
         ArrayDeque<Integer> stack = new ArrayDeque<>();
-        //순서를 기억해야 하는 문제이므로 index를 저장
+        
         for(int i=0; i<len; i++){
-            while(!stack.isEmpty() && prices[i] < prices[stack.peek()]){ //지금 가격이 직전 가격보다 더 작으면 빼야됨
+            while(!stack.isEmpty() && prices[i] < prices[stack.peek()]){
                 int top = stack.pop();
                 answer[top] = i - top;
             }
