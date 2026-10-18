@@ -2,58 +2,57 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 class Solution {
-    public long solution(int[] queue1, int[] queue2) {
-        //큐에서 하나를 빼서 옆에다 집어넣어 두 개의 합이 같도록 만들것
-        //이 때의 최소 횟수가 피룡함
-        //일 단 중간값을 구해
-        long mid = 0;
+    public int solution(int[] queue1, int[] queue2) {
+        int answer = 0;
         long left = 0;
         long right = 0;
-        long answer = 0;
-        ArrayDeque<Integer> firstQueue = new ArrayDeque<>();
-        ArrayDeque<Integer> secondQueue = new ArrayDeque<>();
+        int len = queue1.length;
+        long sum = 0;
+        
+        ArrayDeque<Integer> leftQueue = new ArrayDeque<>();
+        ArrayDeque<Integer> rightQueue = new ArrayDeque<>();
         
         for(int i:queue1){
-            mid += i;
-            left += i;
-            firstQueue.offer(i);
+            left += i; //왼쪽꺼 총합
+            sum += i; //두개 전체 총합
+            leftQueue.offer(i);
         }
         for(int i:queue2){
-            mid += i;
             right += i;
-            secondQueue.offer(i);
+            sum += i;
+            rightQueue.offer(i);
         }
         
-        if(mid % 2 != 0){
+        if(sum % 2 != 0){ //짝수가 아니면 애초에 같아질 수 없음
             return -1;
         }
-        mid = mid / 2;
+        sum = sum / 2;
         
-        while(left != right){
-            if(left < mid){
-                //right에서 하나 주기
-                int numb = secondQueue.poll();
+        while(right != left){ //양쪽이 다른 동안
+            if(left < sum){ //왼쪽이 더 작으면
                 answer ++;
-                left += numb;
-                right -= numb;
-                firstQueue.offer(numb);
+                //오른쪽에서 왼쪽에 넣어아햠
+                int num = rightQueue.poll();
+                leftQueue.offer(num);
+                left += num;
+                right -= num;
             }
-            if(right < mid){
-                int numb = firstQueue.poll();
+            if(right < sum){
                 answer ++;
-                right += numb;
-                left -= numb;
-                secondQueue.offer(numb);
+                int num = leftQueue.poll();
+                rightQueue.offer(num);
+                right += num;
+                left -= num;
             }
             
-            if(left == right){
+            if(right == left){
                 return answer;
             }
-            
-            if(answer > queue1.length*3){
+            if(answer > len*3){
                 return -1;
             }
         }
+        
         return answer;
     }
 }
