@@ -1,35 +1,30 @@
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int length = truck_weights.length;
-        int sum = 0; //다리 위에 올라간 트럭의 전체 무게
-        int time = 0; //걸린 시간 -> 트럭이 다리 위에 올라간 경우에만 증가시켜야함
-        Queue<Integer> queue = new LinkedList<>();
-        for(int i=0; i<length; i++){
-            int now = truck_weights[i]; //현재 트럭
-            while(true){
-                if(queue.isEmpty()){ //다리가 빈 경우 -> 아무거나 올라갈 수 있음
-                    queue.add(now);
-                    sum = sum + now; //트럭의 무게 추가
-                    time++;
-                    break;
-                }else if(queue.size() == bridge_length){ //길이가 꽉 찬 경우
-                    int now2 = queue.poll(); //맨 위에서 제거
-                    sum = sum - now2; //무게 제거
-                }else{ //길이가 남은 경우
-                    if(now + sum <= weight){ //무게가 가능하면
-                        queue.add(now);
-                        sum = sum + now;
-                        time++;  
-                        break;
-                    }else{
-                        queue.add(0);
-                        time++;
-                    }
-                }
+        //주어진 길이만큼 큐를 만들어둬야해서 0을 채우기
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        for(int i=0; i<bridge_length; i++){
+            queue.offer(0);
+        }
+        int answer = 0; //몇 초가 걸리는지 return
+        int i=0;
+        int totalWei = 0;
+        
+        while(i<truck_weights.length){
+            totalWei -= queue.poll();
+            
+            if(truck_weights[i] + totalWei <= weight){ //지금꺼랑 다음꺼 합친게 다리 무게보다 작으면
+                answer ++;
+                queue.offer(truck_weights[i]);
+                totalWei += truck_weights[i];
+                i++;
+            }else{
+                answer++;
+                queue.offer(0);
             }
         }
-        return time + bridge_length;
+        return answer + bridge_length;
     }
 }
